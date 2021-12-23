@@ -28,7 +28,7 @@ model=MatrixFactorization(num_users=train_num_users*args.batch,
                           num_items=train_num_items*args.batch,
                           num_factors=100).to(device)
 optimizer = optim.Adam(model.parameters(),lr=args.lr)
-criterion = torch.nn.CrossEntropyLoss().to(device)
+criterion = torch.nn.MSELoss().to(device)
 
 if __name__=="__main__":
     train = Train(model=model,

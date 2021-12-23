@@ -22,7 +22,7 @@ class MovieLens(Dataset):
         self.file_dir = 'ml-latest-'+file_size
         if download:
             self._download_movielens()
-        self._train_test_split()
+            self._train_test_split()
         self.train = train
         self.data, self.target = self._load_data()
 
@@ -41,7 +41,7 @@ class MovieLens(Dataset):
         user = torch.LongTensor([self.data.userId.values[index]])
         item = torch.LongTensor([self.data.movieId.values[index]])
         target = torch.FloatTensor([self.target.rating.values[index]])
-        return (user,item,target)
+        return user,item,target
 
     def _download_movielens(self) -> None:
         file = self.file_dir+'.zip'

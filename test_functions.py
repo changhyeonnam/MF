@@ -78,3 +78,7 @@ B = torch.FloatTensor([[1],[2]])
 # print(torch.matmul(A,B))
 
 
+for i in range(0,5):
+    for k in range(0,5):
+        cost+=1
+    print(cost)

@@ -1,5 +1,4 @@
 import torch
-import torch.nn
 class Train():
     def __init__(self,model:torch.nn.Module
                  ,optimizer:torch.optim,
@@ -20,7 +19,7 @@ class Train():
         total_epochs = self.epochs
         dataloader = self.dataloader
         criterion = self.criterion
-        total = len(dataloader)
+        total_batch = len(dataloader)
 
         for epochs in range(0,total_epochs):
             avg_cost = 0
@@ -28,8 +27,10 @@ class Train():
                 user, item, target = user.to(self.device), item.to(self.device), target.to(self.device)
                 optimizer.zero_grad()
                 pred = torch.flatten(model(user, item),start_dim=1).to(self.device)
+
                 cost = criterion(pred,target)
                 cost.backward()
                 optimizer.step()
+                avg_cost += cost / total_batch
             print('Epoch:', '%04d' % (epochs + 1), 'cost =', '{:.9f}'.format(avg_cost))
         print('Learning finished')
