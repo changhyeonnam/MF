@@ -1,4 +1,5 @@
 import torch
+import torch.nn
 class Train():
     def __init__(self,model:torch.nn.Module
                  ,optimizer:torch.optim,
