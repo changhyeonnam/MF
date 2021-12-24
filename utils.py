@@ -78,7 +78,7 @@ class MovieLens(Dataset):
     def _train_test_split(self) -> None:
         df = self._read_ratings_csv()
         print('Spliting Traingset & Testset')
-        train, test = train_test_split(df, test_size=0.2) # should add stratify
+        train, test = train_test_split(df, stratif=df["userID"],test_size=0.2) # should add stratify
         train_dataset_dir = os.path.join(self.root, 'train-dataset-movieLens', 'dataset')
         train_label_dir = os.path.join(self.root, 'train-dataset-movieLens', 'label')
         test_dataset_dir = os.path.join(self.root, 'test-dataset-movieLens', 'dataset')
@@ -88,8 +88,8 @@ class MovieLens(Dataset):
             if not os.path.exists(dir):
                 os.makedirs(dir)
         train_dataset, train_label = train.iloc[:, :-1], train.iloc[:, [-1]]
-        test_datset, test_label = test.iloc[:, :-1], test.iloc[:, [-1]]
-        dataset = [train_dataset, train_label, test_datset, test_label]
+        test_dataset, test_label = test.iloc[:, :-1], test.iloc[:, [-1]]
+        dataset = [train_dataset, train_label, test_dataset, test_label]
         data_dir_dict = {}
         for i in range(0, 4):
             data_dir_dict[dir_list[i]] = dataset[i]
