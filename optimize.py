@@ -61,9 +61,9 @@ if __name__ == "__main__":
         result.append(test.test())
 
     plt.plot(range(1, args.factor+1), result)
-    plt.xlabel('epoch')
+    plt.xlabel('number of factor')
     plt.ylabel('RMSE')
-    fig_file = "loss_curve_factor"
+    fig_file = "loss_curve_factor.png"
     if os.path.isfile(fig_file):
         os.remove(fig_file)
     plt.savefig(fig_file)
