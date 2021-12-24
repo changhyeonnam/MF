@@ -8,6 +8,7 @@ from train import Train
 from evaluation import RMSELoss
 from evaluation import Test
 import matplotlib.pyplot as plt
+import os
 
 device = torch.device('cuda' if torch.cuda.is_available()  else 'cpu')
 print('device:',device)
@@ -44,17 +45,21 @@ if __name__=="__main__":
                   optimizer=optimizer,
                   criterion=criterion,
                   epochs=args.epochs,
-                  dataloader=dataloader,)
+                  dataloader=dataloader,
+                  device=device)
     test = Test(model=model,
                 criterion=criterion,
-                dataloader=dataloader_test)
+                dataloader=dataloader_test,
+                device = device)
     costs= train.train()
     plt.plot(range(0,args.epochs),costs)
     plt.xlabel('epoch')
     plt.ylabel('RMSE')
-    plt.show()
+    fig_file = "loss_curve.png")
+    if os.path.isfile(fig_file):
+        os.remove(fig_file)
     plt.savefig('loss_curve.png')
-    print(f"testset: argmax of averge cost{test.t
-    est()}")
+    test.test()
+    
 
 
