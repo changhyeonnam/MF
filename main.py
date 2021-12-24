@@ -15,6 +15,7 @@ print('device:',device)
 
 parser = argparse.ArgumentParser(description="Matrix Factorization with movieLens")
 parser.add_argument('-e','--epochs',default=1,type=int)
+parser.add_argument('-f','--factor',default=30,type=int) # number of factor for MF
 parser.add_argument('-b','--batch',default=32,type=int)
 parser.add_argument('--lr','--learning_rate',default=1e-3,type=int)
 args = parser.parse_args()
@@ -36,7 +37,7 @@ dataloader_test = DataLoader(
 )
 model=MatrixFactorization(num_users=train_num_users*args.batch,
                           num_items=train_num_items*args.batch,
-                          num_factors=100).to(device)
+                          num_factors=args.factor).to(device)
 optimizer = optim.Adam(model.parameters(),lr=args.lr)
 criterion = RMSELoss()
 
