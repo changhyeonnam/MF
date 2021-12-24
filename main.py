@@ -45,6 +45,6 @@ if __name__=="__main__":
     plt.xlabel('epoch')
     plt.ylabel('RMSE')
     plt.show()
-    plt.savefig('Matrix_Factorization_loss_curve')
+    plt.savefig('loss_curve.png')
 
 
