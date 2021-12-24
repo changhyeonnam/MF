@@ -11,8 +11,8 @@ class MatrixFactorization(nn.Module): #
 
         self.user_embedding = nn.Embedding(self.num_users,self.num_factors) # sparse = False
         self.item_embedding = nn.Embedding(self.num_items,self.num_factors) # sparse = False
-        torch.nn.init.ones_(self.user_embedding)
-        torch.nn.init.ones_(self.item_embedding)
+        torch.nn.init.ones_(self.user_embedding.weight)
+        torch.nn.init.ones_(self.item_embedding.weight)
     def forward(self,users,items):
         return torch.bmm(self.user_embedding(users),torch.transpose(self.item_embedding(items),1,2))
 
