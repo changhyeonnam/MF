@@ -32,5 +32,5 @@ class Train():
                 cost.backward()
                 optimizer.step()
                 avg_cost += cost / total_batch
-            # print('Epoch:', '%04d' % (epochs + 1), 'cost =', '{:.9f}'.format(avg_cost))
+            print('Epoch:', '%04d' % (epochs + 1), 'cost =', '{:.9f}'.format(avg_cost))
         print('Learning finished')
