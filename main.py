@@ -6,6 +6,7 @@ from torch.utils.data import DataLoader
 from model.MF import MatrixFactorization
 from train import Train
 from evaluation import RMSELoss
+from evaluation import Test
 import matplotlib.pyplot as plt
 
 device = torch.device('cuda' if torch.cuda.is_available()  else 'cpu')
@@ -27,6 +28,11 @@ dataloader = DataLoader(
     batch_size= args.batch,
     shuffle = True,
 )
+dataloader_test = DataLoader(
+    dataset= test_set,
+    batch_size=args.batch,
+    shuffle=False,
+)
 model=MatrixFactorization(num_users=train_num_users*args.batch,
                           num_items=train_num_items*args.batch,
                           num_factors=100).to(device)
@@ -38,13 +44,17 @@ if __name__=="__main__":
                   optimizer=optimizer,
                   criterion=criterion,
                   epochs=args.epochs,
-                  dataloader=dataloader,
-                  device=device)
+                  dataloader=dataloader,)
+    test = Test(model=model,
+                criterion=criterion,
+                dataloader=dataloader_test)
     costs= train.train()
     plt.plot(range(0,args.epochs),costs)
     plt.xlabel('epoch')
     plt.ylabel('RMSE')
     plt.show()
     plt.savefig('loss_curve.png')
+    print(f"testset: argmax of averge cost{test.t
+    est()}")
 
 

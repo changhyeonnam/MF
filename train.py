@@ -4,14 +4,12 @@ class Train():
                  ,optimizer:torch.optim,
                  epochs:int,
                  dataloader:torch.utils.data.dataloader,
-                 criterion:torch.nn,
-                 device="cpu"):
+                 criterion:torch.nn,):
         self.model = model
         self.optimizer = optimizer
         self.epochs = epochs
         self.dataloader = dataloader
         self.criterion = criterion
-        self.device = device
 
     def train(self):
         model = self.model
@@ -23,10 +21,9 @@ class Train():
         loss = []
         for epochs in range(0,total_epochs):
             avg_cost = 0
-            for idx,(user,item,target) in enumerate(dataloader):
-                user, item, target = user.to(self.device), item.to(self.device), target.to(self.device)
+            for user,item,target in dataloader:
                 optimizer.zero_grad()
-                pred = torch.flatten(model(user, item),start_dim=1).to(self.device)
+                pred = torch.flatten(model(user, item),start_dim=1)
 
                 cost = criterion(pred,target)
                 cost.backward()
