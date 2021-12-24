@@ -5,13 +5,15 @@ class Train():
                  epochs:int,
                  dataloader:torch.utils.data.dataloader,
                  criterion:torch.nn,
-                 device):
+                 device,
+                 print_cost=True):
         self.model = model
         self.optimizer = optimizer
         self.epochs = epochs
         self.dataloader = dataloader
         self.criterion = criterion
         self.device = device
+        self.print_cost = print_cost
     def train(self):
         model = self.model
         optimizer = self.optimizer
@@ -32,7 +34,9 @@ class Train():
                 cost.backward()
                 optimizer.step()
                 avg_cost += cost.item() / total_batch
-            print('Epoch:', '%04d' % (epochs + 1), 'cost =', '{:.9f}'.format(avg_cost))
+            if self.print_cost:
+                print('Epoch:', '%04d' % (epochs + 1), 'cost =', '{:.9f}'.format(avg_cost))
             loss.append(avg_cost)
-        print('Learning finished')
+        if self.print_cost:
+            print('Learning finished')
         return loss

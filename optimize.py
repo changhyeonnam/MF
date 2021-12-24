@@ -52,13 +52,17 @@ if __name__ == "__main__":
                       criterion=criterion,
                       epochs=args.epochs,
                       dataloader=dataloader,
-                      device=device)
+                      device=device,
+                      print_cost=False)
         test = Test(model=model,
                     criterion=criterion,
                     dataloader=dataloader_test,
-                    device=device)
+                    device=device,
+                    print_cost=False)
         costs = train.train()
-        result.append(test.test())
+        cost_test = test.test()
+        print(f"num_factor value : {num_factor}, test_average_rmse : {cost_test}")
+        result.append(cost_test)
 
     plt.plot(range(1, args.factor+1), result)
     plt.xlabel('number of factor')
