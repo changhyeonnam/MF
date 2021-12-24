@@ -55,10 +55,10 @@ if __name__=="__main__":
     plt.plot(range(0,args.epochs),costs)
     plt.xlabel('epoch')
     plt.ylabel('RMSE')
-    fig_file = "loss_curve.png")
+    fig_file = "loss_curve.png"
     if os.path.isfile(fig_file):
         os.remove(fig_file)
-    plt.savefig('loss_curve.png')
+    plt.savefig(fig_file)
     test.test()
     
 
