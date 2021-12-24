@@ -11,7 +11,7 @@ import pathlib
 import requests
 import pandas as pd
 from sklearn.model_selection  import train_test_split
-
+import matplotlib.pyplot as plt
 def download_movielens(root:str) -> None:
     url = ("http://files.grouplens.org/datasets/movielens/ml-latest-small.zip")
     req = requests.get(url, stream=True)
@@ -77,9 +77,15 @@ B = torch.FloatTensor([[1],[2]])
 # print(B.shape)
 # print(torch.matmul(A,B))
 
-loss = torch.nn.MSELoss()
-input = torch.randn(3,5,requires_grad=True)
-target = torch.randn(3,5)
-output = loss(input,target)
-output.backward()
-print(output)
+# loss = torch.nn.MSELoss()
+# input = torch.randn(3,5,requires_grad=True)
+# target = torch.randn(3,5)
+# output = loss(input,target)
+# output.backward()
+# print(output)
+result =[]
+for i in range(0,10):
+    result.append(i)
+
+plt.plot(range(0,10),result)
+plt.show()
