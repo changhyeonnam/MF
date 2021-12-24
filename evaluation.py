@@ -37,4 +37,4 @@ class Test():
                 print(f" cost for test dataset at batch#{idx} : {cost}")
                 avg_cost+=cost
             print(f"average cost for test dataset at {avg_cost/total_batch}")
-
+        return avg_cost/total_batch
