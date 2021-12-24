@@ -5,7 +5,7 @@ class Train():
                  epochs:int,
                  dataloader:torch.utils.data.dataloader,
                  criterion:torch.nn,
-                 device):
+                 device="cpu"):
         self.model = model
         self.optimizer = optimizer
         self.epochs = epochs
