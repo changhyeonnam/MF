@@ -60,7 +60,7 @@ if __name__ == "__main__":
         costs = train.train()
         result.append(test.test())
 
-    plt.plot(range(10, 101), result)
+    plt.plot(range(1, args.factor+1), result)
     plt.xlabel('epoch')
     plt.ylabel('RMSE')
     fig_file = "loss_curve_factor"
