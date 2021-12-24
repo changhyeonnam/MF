@@ -12,3 +12,10 @@ class RMSELoss(nn.Module):
 
     def __call__(self,*args):
         return self.forward(*args)
+
+class Test():
+    def __init__(self,model:torch.nn.Module,
+                 dataloader:torch.utils.data.dataloader,
+                 criterion:torch.nn,):
+        self.model = model
+        self.dataloader = dataloader

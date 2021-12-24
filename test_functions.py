@@ -77,8 +77,9 @@ B = torch.FloatTensor([[1],[2]])
 # print(B.shape)
 # print(torch.matmul(A,B))
 
-
-for i in range(0,5):
-    for k in range(0,5):
-        cost+=1
-    print(cost)
+loss = torch.nn.MSELoss()
+input = torch.randn(3,5,requires_grad=True)
+target = torch.randn(3,5)
+output = loss(input,target)
+output.backward()
+print(output)

@@ -8,8 +8,6 @@ from train import Train
 from evaluation import RMSELoss
 import matplotlib.pyplot as plt
 
-
-
 device = torch.device('cuda' if torch.cuda.is_available()  else 'cpu')
 print('device:',device)
 
