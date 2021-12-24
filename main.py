@@ -24,8 +24,8 @@ dataloader = DataLoader(
     batch_size= args.batch,
     shuffle = True,
 )
-model=MatrixFactorization(num_users=train_num_users,
-                          num_items=train_num_items,
+model=MatrixFactorization(num_users=train_num_users*args.batch,
+                          num_items=train_num_items*args.batch,
                           num_factors=100).to(device)
 optimizer = optim.Adam(model.parameters(),lr=args.lr)
 criterion = torch.nn.MSELoss().to(device)
