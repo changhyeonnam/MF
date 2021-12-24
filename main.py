@@ -6,11 +6,10 @@ from torch.utils.data import DataLoader
 from model.MF import MatrixFactorization
 from train import Train
 from evaluation import RMSELoss
-<<<<<<< HEAD
 import matplotlib.pyplot as plt
-=======
 
->>>>>>> 8c5960360070bc4719cf06b6a3f2dacd8a8ee16a
+
+
 device = torch.device('cuda' if torch.cuda.is_available()  else 'cpu')
 print('device:',device)
 
@@ -43,10 +42,11 @@ if __name__=="__main__":
                   epochs=args.epochs,
                   dataloader=dataloader,
                   device=device)
-    epochs,costs= train.train()
-    plt.plot(epochs,costs)
+    costs= train.train()
+    plt.plot(range(0,args.epochs),costs)
     plt.xlabel('epoch')
     plt.ylabel('RMSE')
     plt.show()
+    plt.savefig('Matrix_Factorization_loss_curve')
 
 

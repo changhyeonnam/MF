@@ -20,7 +20,7 @@ class Train():
         dataloader = self.dataloader
         criterion = self.criterion
         total_batch = len(dataloader)
-
+        loss = []
         for epochs in range(0,total_epochs):
             avg_cost = 0
             for idx,(user,item,target) in enumerate(dataloader):
@@ -33,4 +33,6 @@ class Train():
                 optimizer.step()
                 avg_cost += cost / total_batch
             print('Epoch:', '%04d' % (epochs + 1), 'cost =', '{:.9f}'.format(avg_cost))
+            loss.append(avg_cost)
         print('Learning finished')
+        return loss
