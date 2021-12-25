@@ -83,9 +83,9 @@ B = torch.FloatTensor([[1],[2]])
 # output = loss(input,target)
 # output.backward()
 # print(output)
-result =[]
-for i in range(0,10):
-    result.append(i)
-
-plt.plot(range(0,10),result)
-plt.show()
+# result =[]
+# for i in range(0,10):
+#     result.append(i)
+#
+# plt.plot(range(0,10),result)
+# plt.show()
