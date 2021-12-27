@@ -22,10 +22,11 @@ class MovieLens(Dataset):
         self.file_dir = 'ml-latest-'+file_size
         if download:
             self._download_movielens()
+            self.df = self._read_ratings_csv()
             self._train_test_split()
+        self.df = self._read_ratings_csv()
         self.train = train
         self.data, self.target = self._load_data()
-
     def _load_data(self):
         data_file = f"{'train' if self.train else 'test'}-dataset-movieLens/dataset/dataset.csv"
         data = pd.read_csv(os.path.join(self.root, data_file))
@@ -72,11 +73,50 @@ class MovieLens(Dataset):
         return df
 
     def get_numberof_users_items(self) -> tuple:
-        df = self.data
+        df = self.df
         return df["userId"].nunique(), df["movieId"].nunique()
 
+    def get_bias(self) -> (dict,dict,int):
+        uId_dict = {}
+        mId_dict = {}
+        rating_user_sum = {}
+        rating_movie_sum = {}
+        bias_user = {}
+        bias_movie = {}
+        overall_sum = 0
+        df = self.df
+        for index, row in df.iterrows():
+            try:
+                count = uId_dict[row['userId']] + 1
+            except KeyError:
+                count = 1
+            uId_dict[row['userId']] = count
+            try:
+                count2 = mId_dict[row['movieId']] + 1
+            except KeyError:
+                count2 = 1
+            mId_dict[row['movieId']] = count2
+            try:
+                rating_user = rating_user_sum[row['userId']] + row['rating']
+            except KeyError:
+                rating_user = row['rating']
+            rating_user_sum[row['userId']] = rating_user
+            try:
+                rating_movie = rating_movie_sum[row['movieId']] + row['rating']
+            except KeyError:
+                rating_movie = row['movieId']
+            rating_movie_sum[row['movieId']] = rating_movie
+            overall_sum += row['rating']
+
+        for key, value in uId_dict.items():
+            bias_user[key] = rating_user_sum[key] / value
+        for key, value in mId_dict.items():
+            bias_movie[key] = rating_movie_sum[key] / value
+        avg_rating = overall_sum / len(df)
+        return bias_user,bias_movie,avg_rating
+
     def _train_test_split(self) -> None:
-        df = self._read_ratings_csv()
+        df = self.df
         print('Spliting Traingset & Testset')
         train, test = train_test_split(df, stratif=df["userID"],test_size=0.2) # should add stratify
         train_dataset_dir = os.path.join(self.root, 'train-dataset-movieLens', 'dataset')

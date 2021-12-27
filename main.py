@@ -25,6 +25,7 @@ root_path = "dataset"
 train_set = MovieLens(root=root_path,file_size='small',train=True,download=False)
 test_set = MovieLens(root=root_path,file_size='small',train=False,download=False)
 train_num_users, train_num_items = train_set.get_numberof_users_items()
+bias_uId,bias_mId,overall_avg = train_set.get_bias()
 
 dataloader = DataLoader(
     dataset= train_set,
@@ -38,7 +39,11 @@ dataloader_test = DataLoader(
 )
 model=MatrixFactorization(num_users=train_num_users*args.batch,
                           num_items=train_num_items*args.batch,
-                          num_factors=args.factor).to(device)
+                          num_factors=args.factor,
+                          bias_uId=bias_uId,
+                          bias_mId=bias_mId,
+                          avg=overall_avg,
+                          ).to(device)
 optimizer = optim.Adam(model.parameters(),lr=args.lr)
 criterion = RMSELoss()
 
@@ -50,11 +55,14 @@ if __name__=="__main__":
                   dataloader=dataloader,
                   device=device,
                   print_cost=True)
-    test = Test(model=model,
-                criterion=criterion,
-                dataloader=dataloader_test,
-                device = device,
-                print_cost=True)
+    # test = Test(model=model,
+    #             criterion=criterion,
+    #             dataloader=dataloader_test,
+    #             device = device,
+    #             bias_uId=bias_uId,
+    #             bias_mId=bias_mId,
+    #             avg=overall_avg,
+    #             print_cost=True)
     costs= train.train()
     plt.plot(range(0,args.epochs),costs)
     plt.xlabel('epoch')
@@ -63,7 +71,7 @@ if __name__=="__main__":
     if os.path.isfile(fig_file):
         os.remove(fig_file)
     plt.savefig(fig_file)
-    test.test()
+    # test.test()
     
 
 

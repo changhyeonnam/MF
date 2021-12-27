@@ -29,7 +29,6 @@ class Train():
                 user,item,target=user.to(device),item.to(device),target.to(device)
                 optimizer.zero_grad()
                 pred = torch.flatten(model(user, item),start_dim=1)
-
                 cost = criterion(pred,target)
                 cost.backward()
                 optimizer.step()
