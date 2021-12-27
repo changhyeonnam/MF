@@ -26,8 +26,6 @@ class MovieLens(Dataset):
             self._download_movielens()
             self.df = self._read_ratings_csv()
             self._train_test_split()
-        else:
-            self.df = self._read_ratings_csv()
 
         self.train = train
         if self.train:
@@ -40,6 +38,7 @@ class MovieLens(Dataset):
 
         label_file = f"{'train' if self.train else 'test'}-dataset-movieLens/label/label.csv"
         targets = pd.read_csv(os.path.join(self.root, label_file))
+        print(f"loading {'train' if self.train else 'test'} file Complete!")
         return data, targets
 
     def __len__(self) -> int:
