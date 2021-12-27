@@ -77,11 +77,11 @@ if __name__=="__main__":
     plt.xlabel('epoch')
     plt.ylabel('RMSE')
     now = time.localtime()
-    time_now = f"{now.tm_year:04d}/{now.tm_mon:02d}/{now.tm_mday:02d} {now.tm_hour:02d}:{now.tm_min:02d}:{now.tm_sec:02d}"
+    time_now = f"{now.tm_year:04d}/{now.tm_mon:02d}/{now.tm_mday:02d} {now.tm_hour:02d}:{now.tm_min:02d}:{now.tm_sec:02d} "
 
 
     fig_file = f"loss_curve_epochs:{args.epochs}_batch:{args.batch}_size:{args.size}_lr:{args.lr}_factor:{args_factor}.png"
-    plt.savefig(fig_file+time_now)
+    plt.savefig(time_now+fig_file)
     test.test()
     
 
