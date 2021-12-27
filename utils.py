@@ -26,7 +26,10 @@ class MovieLens(Dataset):
             self._download_movielens()
             self.df = self._read_ratings_csv()
             self._train_test_split()
-        self.df = self._read_ratings_csv()
+        else:
+            self.df = self._read_ratings_csv()
+            self._train_test_split()
+
         self.train = train
         self.data, self.target = self._load_data()
     def _load_data(self):
@@ -68,7 +71,7 @@ class MovieLens(Dataset):
         print("Reading csvfile")
         zipfile = os.path.join(self.root,file)
         if not os.path.isfile(zipfile):
-            self._download_movielens(self.root)
+            self._download_movielens(self)
         fname = os.path.join(self.root, self.file_dir, 'ratings.csv')
         df = pd.read_csv(fname, sep=',').drop(columns=['timestamp'])
         print("Reading Complete!")
@@ -143,7 +146,7 @@ class MovieLens(Dataset):
     def _train_test_split(self) -> None:
         df = self.df
         print('Spliting Traingset & Testset')
-        train, test = train_test_split(df, stratif=df["userID"],test_size=0.2) # should add stratify
+        train, test = train_test_split(df,test_size=0.2) # should add stratify
         train_dataset_dir = os.path.join(self.root, 'train-dataset-movieLens', 'dataset')
         train_label_dir = os.path.join(self.root, 'train-dataset-movieLens', 'label')
         test_dataset_dir = os.path.join(self.root, 'test-dataset-movieLens', 'dataset')
