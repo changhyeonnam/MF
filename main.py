@@ -43,6 +43,7 @@ model=MatrixFactorization(num_users=train_num_users*args.batch,
                           bias_uId=bias_uId,
                           bias_mId=bias_mId,
                           avg=overall_avg,
+                          device=device
                           ).to(device)
 optimizer = optim.Adam(model.parameters(),lr=args.lr)
 criterion = RMSELoss()
