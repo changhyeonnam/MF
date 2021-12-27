@@ -28,7 +28,6 @@ class MovieLens(Dataset):
             self._train_test_split()
         else:
             self.df = self._read_ratings_csv()
-            self._train_test_split()
 
         self.train = train
         self.data, self.target = self._load_data()
