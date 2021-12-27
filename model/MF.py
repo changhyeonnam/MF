@@ -4,12 +4,13 @@ import torch.nn as nn
 class MatrixFactorization(nn.Module): #
 
     def __init__(self,num_users:int,num_items:int,num_factors:int) -> None:
+
         super(MatrixFactorization, self).__init__()
         self.num_users = num_users
         self.num_items = num_items
         self.num_factors = num_factors
 
-        self.user_embedding = nn.Embedding(self.num_users,self.num_factors) # sparse = False
+        self.user_embedding = nn.Embedding(self.num_users,self.num_factors) # num_embeddings = batchsize * numuser embedding_dim = num_factors
         self.item_embedding = nn.Embedding(self.num_items,self.num_factors) # sparse = False
         torch.nn.init.ones_(self.user_embedding.weight)
         torch.nn.init.ones_(self.item_embedding.weight)

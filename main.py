@@ -7,8 +7,9 @@ from model.MF import MatrixFactorization
 from train import Train
 from evaluation import RMSELoss
 from evaluation import Test
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import os
+os.environ['KMP_DUPLICATE_LIB_OK']=''
 
 device = torch.device('cuda' if torch.cuda.is_available()  else 'cpu')
 print('device:',device)
@@ -47,11 +48,13 @@ if __name__=="__main__":
                   criterion=criterion,
                   epochs=args.epochs,
                   dataloader=dataloader,
-                  device=device)
+                  device=device,
+                  print_cost=True)
     test = Test(model=model,
                 criterion=criterion,
                 dataloader=dataloader_test,
-                device = device)
+                device = device,
+                print_cost=True)
     costs= train.train()
     plt.plot(range(0,args.epochs),costs)
     plt.xlabel('epoch')
