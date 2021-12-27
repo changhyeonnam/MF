@@ -14,6 +14,7 @@ class Train():
         self.criterion = criterion
         self.device = device
         self.print_cost = print_cost
+
     def train(self):
         model = self.model
         optimizer = self.optimizer

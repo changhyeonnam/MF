@@ -30,7 +30,10 @@ class MovieLens(Dataset):
             self.df = self._read_ratings_csv()
 
         self.train = train
+        if self.train:
+            self.uId_dict,self.mId_dict = self.get_key_count()
         self.data, self.target = self._load_data()
+
     def _load_data(self):
         data_file = f"{'train' if self.train else 'test'}-dataset-movieLens/dataset/dataset.csv"
         data = pd.read_csv(os.path.join(self.root, data_file))
@@ -110,6 +113,7 @@ class MovieLens(Dataset):
 
     def get_bias(self) -> (dict,dict,int):
 
+        uId_dict, mId_dict = self.uId_dict, self.mId_dict
         rating_user_sum = {}
         rating_movie_sum = {}
         bias_user = {}
@@ -131,15 +135,13 @@ class MovieLens(Dataset):
             rating_movie_sum[row['movieId']] = rating_movie
             overall_sum += row['rating']
 
-        uId_dict,mId_dict = self.get_key_count()
 
         for key, value in uId_dict.items():
-            bias_user[key] = rating_user_sum[key] / value
+            bias_user[key] = rating_user_sum[key] / value  # value = number of rating by user[key]
         for key, value in mId_dict.items():
-            bias_movie[key] = rating_movie_sum[key] / value
+            bias_movie[key] = rating_movie_sum[key] / value # value = number of rating by movie[key]
         avg_rating = overall_sum / len(df)
-        # bias_user = self.normalize(bias_user,target=1.0)
-        # bias_movie = self.normalize(bias_movie,target=1.0)
+
         return bias_user,bias_movie,avg_rating
 
     def _train_test_split(self) -> None:

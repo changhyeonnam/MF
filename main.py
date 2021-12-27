@@ -9,6 +9,8 @@ from evaluation import RMSELoss
 from evaluation import Test
 import matplotlib.pyplot as plt
 import os
+import time
+
 os.environ['KMP_DUPLICATE_LIB_OK']=''
 
 device = torch.device('cuda' if torch.cuda.is_available()  else 'cpu')
@@ -28,9 +30,11 @@ train_set = MovieLens(root=root_path,file_size=args.size,train=True,download=Fal
 test_set = MovieLens(root=root_path,file_size=args.size,train=False,download=False)
 train_num_users, train_num_items = train_set.get_numberof_users_items()
 bias_uId,bias_mId,overall_avg = train_set.get_bias()
-user_count_dict,movie_count_dict =  train_set.get_key_count()
+print("Bias loaded!")
+user_count_dict,movie_count_dict =  train_set.uId_dict,train_set.mId_dict
 confidence_score = train_set.normalize(user_count_dict,target=1.0)
-print("bias confidence loaded!")
+print("Confidence loaded!")
+
 dataloader = DataLoader(
     dataset= train_set,
     batch_size= args.batch,
@@ -72,10 +76,12 @@ if __name__=="__main__":
     plt.plot(range(0,args.epochs),costs)
     plt.xlabel('epoch')
     plt.ylabel('RMSE')
-    fig_file = "loss_curve.png"
-    if os.path.isfile(fig_file):
-        os.remove(fig_file)
-    plt.savefig(fig_file)
+    now = time.localtime()
+    time_now = f"{now.tm_year:04d}/{now.tm_mon:02d}/{now.tm_mday:02d} {now.tm_hour:02d}:{now.tm_min:02d}:{now.tm_sec:02d}"
+
+
+    fig_file = f"loss_curve_epochs:{args.epochs}_batch:{args.batch}_size:{args.size}_lr:{args.lr}_factor:{args_factor}.png"
+    plt.savefig(fig_file+time_now)
     test.test()
     
 
