@@ -22,11 +22,12 @@ parser.add_argument('-f','--factor',default=30,type=int) # number of factor for 
 parser.add_argument('-b','--batch',default=32,type=int)
 parser.add_argument('--lr','--learning_rate',default=1e-3,type=float)
 parser.add_argument('-s','--size',default='small',type=str)
+parser.add_argument('-d','--download',default=false,type=bool)
 
 args = parser.parse_args()
 
 root_path = "dataset"
-train_set = MovieLens(root=root_path,file_size=args.size,train=True,download=False)
+train_set = MovieLens(root=root_path,file_size=args.size,train=True,download=args.d)
 test_set = MovieLens(root=root_path,file_size=args.size,train=False,download=False)
 train_num_users, train_num_items = train_set.get_numberof_users_items()
 bias_uId,bias_mId,overall_avg = train_set.get_bias()
@@ -77,11 +78,13 @@ if __name__=="__main__":
     plt.xlabel('epoch')
     plt.ylabel('RMSE')
     now = time.localtime()
-    time_now = f"{now.tm_year:04d}/{now.tm_mon:02d}/{now.tm_mday:02d} {now.tm_hour:02d}:{now.tm_min:02d}:{now.tm_sec:02d} "
+    time_now = f"{now.tm_hour:02d}:{now.tm_min:02d}:{now.tm_sec:02d} "
 
 
-    fig_file = f"loss_curve_epochs:{args.epochs}_batch:{args.batch}_size:{args.size}_lr:{args.lr}_factor:{args_factor}.png"
-    plt.savefig(time_now+fig_file)
+    fig_file = f"loss_curve_epochs:{args.epochs}_batch:{args.batch}_size:{args.size}_lr:{args.lr}_factor:{args.factor}.png"
+    if os.path.isfile(fig_file):
+        os.remove(fig_file)
+    plt.savefig(fig_file)
     test.test()
     
 
