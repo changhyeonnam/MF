@@ -1,8 +1,6 @@
 import zipfile
-
 from torch.utils.data import Dataset
 import torch
-import pandas as pd
 import os
 import pandas  as pd
 import numpy as np
@@ -76,14 +74,9 @@ class MovieLens(Dataset):
         df = self.df
         return df["userId"].nunique(), df["movieId"].nunique()
 
-    def get_bias(self) -> (dict,dict,int):
+    def get_key_count(self) ->(dict,dict):
         uId_dict = {}
         mId_dict = {}
-        rating_user_sum = {}
-        rating_movie_sum = {}
-        bias_user = {}
-        bias_movie = {}
-        overall_sum = 0
         df = self.df
         for index, row in df.iterrows():
             try:
@@ -96,23 +89,49 @@ class MovieLens(Dataset):
             except KeyError:
                 count2 = 1
             mId_dict[row['movieId']] = count2
+        return uId_dict,mId_dict
+
+    def normalize(self, d, target=1.0):
+        avg = sum(d.values())/float(len(d))
+        list_val=[]
+        for val in d.values():
+            list_val.append(val)
+        std = np.std(list_val)
+        return {key: (value-avg)/std for key, value in d.items()}
+
+
+    def get_bias(self) -> (dict,dict,int):
+
+        rating_user_sum = {}
+        rating_movie_sum = {}
+        bias_user = {}
+        bias_movie = {}
+        overall_sum = 0
+        df = self.df
+        for index, row in df.iterrows():
             try:
                 rating_user = rating_user_sum[row['userId']] + row['rating']
             except KeyError:
                 rating_user = row['rating']
             rating_user_sum[row['userId']] = rating_user
+
             try:
                 rating_movie = rating_movie_sum[row['movieId']] + row['rating']
             except KeyError:
-                rating_movie = row['movieId']
+                rating_movie = row['rating']
+
             rating_movie_sum[row['movieId']] = rating_movie
             overall_sum += row['rating']
+
+        uId_dict,mId_dict = self.get_key_count()
 
         for key, value in uId_dict.items():
             bias_user[key] = rating_user_sum[key] / value
         for key, value in mId_dict.items():
             bias_movie[key] = rating_movie_sum[key] / value
         avg_rating = overall_sum / len(df)
+        # bias_user = self.normalize(bias_user,target=1.0)
+        # bias_movie = self.normalize(bias_movie,target=1.0)
         return bias_user,bias_movie,avg_rating
 
     def _train_test_split(self) -> None:

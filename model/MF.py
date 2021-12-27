@@ -28,7 +28,7 @@ class MatrixFactorization(nn.Module): #
         result = torch.bmm(self.user_embedding(users),torch.transpose(self.item_embedding(items),1,2))
         bias_uId_tensor=np.array([])
         bias_mId_tensor=np.array([])
-        for item  in users:
+        for item in users:
             bias_uId_tensor=np.append(bias_uId_tensor,self.bias_uId[item.item()])
         bias_uId_tensor=bias_uId_tensor.reshape((-1,1,1))
         for item in items:
@@ -36,10 +36,8 @@ class MatrixFactorization(nn.Module): #
         bias_mId_tensor=bias_mId_tensor.reshape((-1,1,1))
         bias = bias_uId_tensor+bias_mId_tensor+self.avg #broad casting
         bias = torch.FloatTensor(bias)
-        return result+bias
+        return result + bias
 
     def __call__(self,*args):
         return self.forward(*args)
 
-    def predcit(self,users,items):
-        return self.forward(users,items)
