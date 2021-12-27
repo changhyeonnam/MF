@@ -55,14 +55,14 @@ if __name__=="__main__":
                   dataloader=dataloader,
                   device=device,
                   print_cost=True)
-    # test = Test(model=model,
-    #             criterion=criterion,
-    #             dataloader=dataloader_test,
-    #             device = device,
-    #             bias_uId=bias_uId,
-    #             bias_mId=bias_mId,
-    #             avg=overall_avg,
-    #             print_cost=True)
+    test = Test(model=model,
+                criterion=criterion,
+                dataloader=dataloader_test,
+                device = device,
+                bias_uId=bias_uId,
+                bias_mId=bias_mId,
+                avg=overall_avg,
+                print_cost=True)
     costs= train.train()
     plt.plot(range(0,args.epochs),costs)
     plt.xlabel('epoch')
@@ -71,7 +71,7 @@ if __name__=="__main__":
     if os.path.isfile(fig_file):
         os.remove(fig_file)
     plt.savefig(fig_file)
-    # test.test()
+    test.test()
     
 
 
