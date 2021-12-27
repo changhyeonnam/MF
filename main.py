@@ -22,12 +22,15 @@ parser.add_argument('-f','--factor',default=30,type=int) # number of factor for 
 parser.add_argument('-b','--batch',default=32,type=int)
 parser.add_argument('--lr','--learning_rate',default=1e-3,type=float)
 parser.add_argument('-s','--size',default='small',type=str)
-parser.add_argument('-d','--download',default=false,type=bool)
+parser.add_argument('-d','--download',default=False,type=bool)
+parser.add_argument('-bi','--bias',default=True,type=bool)
+parser.add_argument('-c','--confidence',default=True,type=bool)
+
 
 args = parser.parse_args()
 
 root_path = "dataset"
-train_set = MovieLens(root=root_path,file_size=args.size,train=True,download=args.d)
+train_set = MovieLens(root=root_path,file_size=args.size,train=True,download=args.download)
 test_set = MovieLens(root=root_path,file_size=args.size,train=False,download=False)
 train_num_users, train_num_items = train_set.get_numberof_users_items()
 bias_uId,bias_mId,overall_avg = train_set.get_bias()
@@ -54,8 +57,8 @@ model=MatrixFactorization(num_users=train_num_users*args.batch,
                           avg=overall_avg,
                           device=device,
                           confidence_score_dict=confidence_score,
-                          bias_select=True,
-                          confidence_select=True
+                          bias_select=args.bias,
+                          confidence_select=args.confidence
                           ).to(device)
 optimizer = optim.Adam(model.parameters(),lr=args.lr)
 criterion = RMSELoss()
