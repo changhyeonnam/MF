@@ -28,6 +28,7 @@ train_num_users, train_num_items = train_set.get_numberof_users_items()
 bias_uId,bias_mId,overall_avg = train_set.get_bias()
 user_count_dict,movie_count_dict =  train_set.get_key_count()
 confidence_score = train_set.normalize(user_count_dict,target=1.0)
+print("bias confidence loaded!")
 dataloader = DataLoader(
     dataset= train_set,
     batch_size= args.batch,
