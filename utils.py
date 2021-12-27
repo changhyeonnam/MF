@@ -91,6 +91,8 @@ class MovieLens(Dataset):
             mId_dict[row['movieId']] = count2
         return uId_dict,mId_dict
 
+
+
     def normalize(self, d, target=1.0):
         avg = sum(d.values())/float(len(d))
         list_val=[]

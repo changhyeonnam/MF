@@ -26,7 +26,8 @@ train_set = MovieLens(root=root_path,file_size='small',train=True,download=False
 test_set = MovieLens(root=root_path,file_size='small',train=False,download=False)
 train_num_users, train_num_items = train_set.get_numberof_users_items()
 bias_uId,bias_mId,overall_avg = train_set.get_bias()
-
+user_count_dict,movie_count_dict =  train_set.get_key_count()
+confidence_score = train_set.normalize(user_count_dict,target=1.0)
 dataloader = DataLoader(
     dataset= train_set,
     batch_size= args.batch,
@@ -43,7 +44,8 @@ model=MatrixFactorization(num_users=train_num_users*args.batch,
                           bias_uId=bias_uId,
                           bias_mId=bias_mId,
                           avg=overall_avg,
-                          device=device
+                          device=device,
+                          confidence_score_dict=confidence_score
                           ).to(device)
 optimizer = optim.Adam(model.parameters(),lr=args.lr)
 criterion = RMSELoss()
