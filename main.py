@@ -84,7 +84,7 @@ if __name__=="__main__":
     time_now = f"{now.tm_hour:02d}:{now.tm_min:02d}:{now.tm_sec:02d} "
 
 
-    fig_file = f"loss_curve_epochs:{args.epochs}_batch:{args.batch}_size:{args.size}_lr:{args.lr}_factor:{args.factor}.png"
+    fig_file = f"loss_curve_epochs_{args.epochs}_batch_{args.batch}_size_{args.size}_lr_{args.lr}_factor_{args.factor}.png"
     if os.path.isfile(fig_file):
         os.remove(fig_file)
     plt.savefig(fig_file)
