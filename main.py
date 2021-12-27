@@ -48,11 +48,13 @@ if __name__=="__main__":
                   criterion=criterion,
                   epochs=args.epochs,
                   dataloader=dataloader,
-                  device=device)
+                  device=device,
+                  print_cost=True)
     test = Test(model=model,
                 criterion=criterion,
                 dataloader=dataloader_test,
-                device = device)
+                device = device,
+                print_cost=True)
     costs= train.train()
     plt.plot(range(0,args.epochs),costs)
     plt.xlabel('epoch')

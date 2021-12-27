@@ -71,8 +71,8 @@ def load_data(root,train):
     targets = pd.read_csv(os.path.join(root,label_file))
     return data, targets
 
-A = torch.FloatTensor([[1,2],[3,4]])
-B = torch.FloatTensor([[1],[2]])
+# A = torch.FloatTensor([[1,2],[3,4]])
+# B = torch.FloatTensor([[1],[2]])
 # print(A.shape)
 # print(B.shape)
 # print(torch.matmul(A,B))
