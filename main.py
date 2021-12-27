@@ -59,9 +59,6 @@ if __name__=="__main__":
                 criterion=criterion,
                 dataloader=dataloader_test,
                 device = device,
-                bias_uId=bias_uId,
-                bias_mId=bias_mId,
-                avg=overall_avg,
                 print_cost=True)
     costs= train.train()
     plt.plot(range(0,args.epochs),costs)
