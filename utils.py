@@ -14,10 +14,14 @@ class MovieLens(Dataset):
                  root:str,
                  file_size:str,
                  train:bool=False,
-                 download:bool=False)->None:
+                 download:bool=False,
+                 )->None:
         super(MovieLens, self).__init__()
         self.root = root
-        self.file_dir = 'ml-latest-'+file_size
+        if file_size =='large':
+            self.file_dir='ml-latest'
+        else:
+            self.file_dir = 'ml-latest-'+file_size
         if download:
             self._download_movielens()
             self.df = self._read_ratings_csv()

@@ -22,8 +22,8 @@ parser.add_argument('--lr','--learning_rate',default=1e-3,type=int)
 args = parser.parse_args()
 
 root_path = "dataset"
-train_set = MovieLens(root=root_path,file_size='small',train=True,download=False)
-test_set = MovieLens(root=root_path,file_size='small',train=False,download=False)
+train_set = MovieLens(root=root_path,file_size='large',train=True,download=False)
+test_set = MovieLens(root=root_path,file_size='large',train=False,download=False)
 train_num_users, train_num_items = train_set.get_numberof_users_items()
 bias_uId,bias_mId,overall_avg = train_set.get_bias()
 user_count_dict,movie_count_dict =  train_set.get_key_count()
