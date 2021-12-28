@@ -71,7 +71,7 @@ class MovieLens(Dataset):
             print("Downloading Complete!")
 
     def _read_ratings_csv(self) -> pd.DataFrame:
-        file = self.file_dir+'.zip'
+        file = self.root+'/'+self.file_dir+'.zip'
         print("Reading file")
         zipfile = os.path.join(self.root,file)
         if not os.path.isfile(zipfile):
