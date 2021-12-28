@@ -19,7 +19,6 @@ class MovieLens(Dataset):
         super(MovieLens, self).__init__()
         self.root = root
         self.train = train
-
         if file_size =='large':
             self.file_dir='ml-latest'
         else:
@@ -29,8 +28,7 @@ class MovieLens(Dataset):
             self._download_movielens()
             self.df = self._read_ratings_csv()
             self._train_test_split()
-
-        if not download and train:
+        elif not download and train:
             self.df = self._read_ratings_csv()
         if self.train:
             self.uId_dict,self.mId_dict = self.get_key_count()
@@ -71,7 +69,7 @@ class MovieLens(Dataset):
             print("Downloading Complete!")
 
     def _read_ratings_csv(self) -> pd.DataFrame:
-        file = self.root+'/'+self.file_dir+'.zip'
+        file = self.file_dir+'.zip'
         print("Reading file")
         zipfile = os.path.join(self.root,file)
         if not os.path.isfile(zipfile):
