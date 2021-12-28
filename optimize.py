@@ -70,7 +70,17 @@ criterion = RMSELoss()
 if __name__ == "__main__":
     result=[]
     for num_factor in range(1,args.factor+1):
-
+        model = MatrixFactorization(num_users=train_num_users * args.batch,
+                                    num_items=train_num_items * args.batch,
+                                    num_factors=num_factor,
+                                    bias_uId=bias_uId,
+                                    bias_mId=bias_mId,
+                                    avg=overall_avg,
+                                    device=device,
+                                    confidence_score_dict=confidence_score,
+                                    bias_select=args.bias,
+                                    confidence_select=args.confidence
+                                    ).to(device)
         train = Train(model=model,
                       optimizer=optimizer,
                       criterion=criterion,
