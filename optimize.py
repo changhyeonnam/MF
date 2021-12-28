@@ -11,7 +11,7 @@ from evaluation import Test
 import matplotlib.pyplot as plt
 import os
 import time
-
+from distutils.util import strtobool
 os.environ['KMP_DUPLICATE_LIB_OK'] = ''
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -19,15 +19,28 @@ print('device:', device)
 print('Current cuda device:', torch.cuda.current_device())
 print('Count of using GPUs:', torch.cuda.device_count())
 
+# function for using bool type in str2bool
+def str2bool(v):
+    if isinstance(v, bool):
+        return v
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+
+
 parser = argparse.ArgumentParser(description="Matrix Factorization with movieLens")
 parser.add_argument('-e', '--epochs', default=1, type=int)
 parser.add_argument('-f', '--factor', default=30, type=int)  # number of factor for MF
 parser.add_argument('-b', '--batch', default=32, type=int)
 parser.add_argument('--lr', '--learning_rate', default=1e-3, type=float)
 parser.add_argument('-s', '--size', default='small', type=str)
-parser.add_argument('-d', '--download', default=False, type=bool)
-parser.add_argument('-bi', '--bias', default=True, type=bool)
-parser.add_argument('-c', '--confidence', default=True, type=bool)
+parser.add_argument('-d','--download', type=str2bool, nargs='?',
+                        const=True, default=False)
+parser.add_argument('-bi', '--bias', default=True, const=True,type=str2bool)
+parser.add_argument('-c', '--confidence', default=True, const=True,type=str2bool)
 
 args = parser.parse_args()
 

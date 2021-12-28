@@ -20,21 +20,33 @@ print('device:',device)
 # print('Current cuda device:', torch.cuda.current_device())
 # print('Count of using GPUs:', torch.cuda.device_count())
 
+def str2bool(v):
+    if isinstance(v, bool):
+        return v
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'False', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+
+
 parser = argparse.ArgumentParser(description="Matrix Factorization with movieLens")
-parser.add_argument('-e','--epochs',default=1,type=int)
-parser.add_argument('-f','--factor',default=30,type=int) # number of factor for MF
-parser.add_argument('-b','--batch',default=32,type=int)
-parser.add_argument('--lr','--learning_rate',default=1e-3,type=float)
-parser.add_argument('-s','--size',default='small',type=str)
-parser.add_argument('-d','--download',default=False,type=bool)
-parser.add_argument('-bi','--bias',default=True,type=bool)
-parser.add_argument('-c','--confidence',default=True,type=bool)
+parser.add_argument('-e', '--epochs', default=1, type=int)
+parser.add_argument('-f', '--factor', default=30, type=int)  # number of factor for MF
+parser.add_argument('-b', '--batch', default=32, type=int)
+parser.add_argument('--lr', '--learning_rate', default=1e-3, type=float)
+parser.add_argument('-s', '--size', default='small', type=str)
+parser.add_argument('-d','--download', type=str2bool, nargs='?',
+                        const=True, default=True)
+parser.add_argument('-bi', '--bias', default=True, const=True,type=str2bool)
+parser.add_argument('-c', '--confidence', default=True, const=True,type=str2bool)
 
 
 args = parser.parse_args()
 
 root_path = "dataset"
-train_set = MovieLens(root=root_path,file_size=args.size,train=True,download=args.download)
+train_set = MovieLens(root=root_path,file_size=args.size,train=True,download=True)
 test_set = MovieLens(root=root_path,file_size=args.size,train=False,download=False)
 
 train_num_users, train_num_items = train_set.get_numberof_users_items()
