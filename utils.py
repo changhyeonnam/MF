@@ -75,7 +75,7 @@ class MovieLens(Dataset):
         print("Reading file")
         zipfile = os.path.join(self.root,file)
         if not os.path.isfile(zipfile):
-            self._download_movielens(self)
+            self._download_movielens()
         fname = os.path.join(self.root, self.file_dir, 'ratings.csv')
         df = pd.read_csv(fname, sep=',').drop(columns=['timestamp'])
         print("Reading Complete!")
