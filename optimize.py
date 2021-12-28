@@ -86,7 +86,7 @@ if __name__ == "__main__":
                                     bias_select=args.bias,
                                     confidence_select=args.confidence
                                     ).to(device)
-        optimizer = optim.Adam(model.parameters(),lr=arg.lr)
+        optimizer = optim.Adam(model.parameters(),lr=args.lr)
         criterion = RMSELoss()
         train = Train(model=model,
                       optimizer=optimizer,
@@ -108,7 +108,7 @@ if __name__ == "__main__":
     plt.plot(range(1, args.factor + 1), result)
     plt.xlabel('number of factor')
     plt.ylabel('RMSE')
-    fig_file = "loss_curve_factor.png"
+    fig_file = "loss_curve_factor_ii.png"
     if os.path.isfile(fig_file):
         os.remove(fig_file)
     plt.savefig(fig_file)

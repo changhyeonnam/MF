@@ -79,7 +79,11 @@ model=MatrixFactorization(num_users=train_num_users*args.batch,
                           confidence_score_dict=confidence_score,
                           bias_select=args.bias,
                           confidence_select=args.confidence
-                          ).to(device)
+                          )
+if torch.cuda.device_count() >1:
+    print("Multi gpu", torch.cuda.device_count())
+    model = torch.nn.DataParallel(model)
+model.to(device)
 optimizer = optim.Adam(model.parameters(),lr=args.lr)
 criterion = RMSELoss()
 
