@@ -73,7 +73,7 @@ if __name__ == "__main__":
                                     bias_select=args.bias,
                                     confidence_select=args.confidence
                                     ).to(device)
-        optimizer = optim.Adam(model.parameters(),lr=arg.lr)
+        optimizer = optim.Adam(model.parameters(),lr=args.lr)
         criterion = RMSELoss()
         train = Train(model=model,
                       optimizer=optimizer,
