@@ -37,10 +37,7 @@ parser.add_argument('-f', '--factor', default=30, type=int)  # number of factor 
 parser.add_argument('-b', '--batch', default=32, type=int)
 parser.add_argument('--lr', '--learning_rate', default=1e-3, type=float)
 parser.add_argument('-s', '--size', default='small', type=str)
-parser.add_argument('-d','--download', type=str2bool, nargs='?',
-                        const=True, default=True)
-parser.add_argument('-bi', '--bias', default=True, const=True,type=str2bool)
-parser.add_argument('-c', '--confidence', default=True, const=True,type=str2bool)
+
 
 
 args = parser.parse_args()
@@ -77,8 +74,8 @@ model=MatrixFactorization(num_users=train_num_users*args.batch,
                           avg=overall_avg,
                           device=device,
                           confidence_score_dict=confidence_score,
-                          bias_select=args.bias,
-                          confidence_select=args.confidence
+                          bias_select=True,
+                          confidence_select=True
                           )
 if torch.cuda.device_count() >1:
     print("Multi gpu", torch.cuda.device_count())
