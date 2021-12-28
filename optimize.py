@@ -56,8 +56,8 @@ dataloader_test = DataLoader(
 )
 
 
-optimizer = optim.Adam(model.parameters(), lr=args.lr)
-criterion = RMSELoss()
+
+
 
 if __name__ == "__main__":
     result=[]
@@ -73,6 +73,8 @@ if __name__ == "__main__":
                                     bias_select=args.bias,
                                     confidence_select=args.confidence
                                     ).to(device)
+        optimizer = optim.Adam(model.parameters(),lr=arg.lr)
+        criterion = RMSELoss()
         train = Train(model=model,
                       optimizer=optimizer,
                       criterion=criterion,
