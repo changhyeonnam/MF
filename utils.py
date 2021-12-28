@@ -30,7 +30,7 @@ class MovieLens(Dataset):
             self.df = self._read_ratings_csv()
             self._train_test_split()
 
-        if not download and self.train:
+        if not download and train:
             self.df = self._read_ratings_csv()
         if self.train:
             self.uId_dict,self.mId_dict = self.get_key_count()
