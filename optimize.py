@@ -16,6 +16,8 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = ''
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print('device:', device)
+print('Current cuda device:', torch.cuda.current_device())
+print('Count of using GPUs:', torch.cuda.device_count())
 
 parser = argparse.ArgumentParser(description="Matrix Factorization with movieLens")
 parser.add_argument('-e', '--epochs', default=1, type=int)
