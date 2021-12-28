@@ -13,6 +13,7 @@ class RMSELoss(nn.Module):
     def __call__(self,*args):
         return self.forward(*args)
 
+
 class Test():
     def __init__(self,model:torch.nn.Module,
                  dataloader:torch.utils.data.dataloader,
@@ -24,6 +25,7 @@ class Test():
         self.criterion = criterion
         self.device = device
         self.print_cost = print_cost
+
     def test(self):
         model = self.model
         dataloader = self.dataloader

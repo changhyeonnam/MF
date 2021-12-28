@@ -34,6 +34,7 @@ class MatrixFactorization(nn.Module):
 
     def forward(self,users,items):
         result = torch.bmm(self.user_embedding(users),torch.transpose(self.item_embedding(items),1,2))
+        # (32,1,10) (32,10,1) = 32, 1 ,1
         if self.bias_select:
             bias_uId=np.array([])
             bias_mId=np.array([])

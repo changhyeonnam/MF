@@ -24,10 +24,12 @@ class MovieLens(Dataset):
             self.file_dir='ml-latest'
         else:
             self.file_dir = 'ml-latest-'+file_size
+
         if download:
             self._download_movielens()
             self.df = self._read_ratings_csv()
             self._train_test_split()
+
         if not download and self.train:
             self.df = self._read_ratings_csv()
         if self.train:
@@ -37,7 +39,6 @@ class MovieLens(Dataset):
     def _load_data(self):
         data_file = f"{'train' if self.train else 'test'}-dataset-movieLens/dataset/dataset.csv"
         data = pd.read_csv(os.path.join(self.root, data_file))
-
         label_file = f"{'train' if self.train else 'test'}-dataset-movieLens/label/label.csv"
         targets = pd.read_csv(os.path.join(self.root, label_file))
         print(f"loading {'train' if self.train else 'test'} file Complete!")
@@ -101,8 +102,6 @@ class MovieLens(Dataset):
             mId_dict[row['movieId']] = count2
         return uId_dict,mId_dict
 
-
-
     def normalize(self, d, target=1.0):
         avg = sum(d.values())/float(len(d))
         list_val=[]
@@ -113,7 +112,6 @@ class MovieLens(Dataset):
 
 
     def get_bias(self) -> (dict,dict,int):
-
         uId_dict, mId_dict = self.uId_dict, self.mId_dict
         rating_user_sum = {}
         rating_movie_sum = {}

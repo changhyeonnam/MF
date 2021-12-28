@@ -32,9 +32,12 @@ args = parser.parse_args()
 root_path = "dataset"
 train_set = MovieLens(root=root_path,file_size=args.size,train=True,download=args.download)
 test_set = MovieLens(root=root_path,file_size=args.size,train=False,download=False)
+
 train_num_users, train_num_items = train_set.get_numberof_users_items()
+
 bias_uId,bias_mId,overall_avg = train_set.get_bias()
 print("Bias loaded!")
+
 user_count_dict,movie_count_dict =  train_set.uId_dict,train_set.mId_dict
 confidence_score = train_set.normalize(user_count_dict,target=1.0)
 print("Confidence loaded!")
@@ -49,6 +52,7 @@ dataloader_test = DataLoader(
     batch_size=args.batch,
     shuffle=False,
 )
+
 model=MatrixFactorization(num_users=train_num_users*args.batch,
                           num_items=train_num_items*args.batch,
                           num_factors=args.factor,
@@ -82,8 +86,6 @@ if __name__=="__main__":
     plt.ylabel('RMSE')
     now = time.localtime()
     time_now = f"{now.tm_hour:02d}:{now.tm_min:02d}:{now.tm_sec:02d} "
-
-
     fig_file = f"loss_curve_epochs_{args.epochs}_batch_{args.batch}_size_{args.size}_lr_{args.lr}_factor_{args.factor}.png"
     if os.path.isfile(fig_file):
         os.remove(fig_file)
