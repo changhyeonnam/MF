@@ -1,4 +1,4 @@
-### MFmt (Matrix Factorization MovieLens int torch)
+### MFmt (Matrix Factorization MovieLens in torch)
 
 reference : [Matrix Factorization Techniques for Recommender Systems](https://datajobs.com/data-science-repo/Recommender-Systems-[Netflix].pdf)
 
