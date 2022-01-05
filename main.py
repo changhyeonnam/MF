@@ -17,19 +17,8 @@ os.environ['KMP_DUPLICATE_LIB_OK']=''
 device = torch.device('cuda' if torch.cuda.is_available()  else 'cpu')
 print('device:',device)
 
-# print('Current cuda device:', torch.cuda.current_device())
-# print('Count of using GPUs:', torch.cuda.device_count())
-
-def str2bool(v):
-    if isinstance(v, bool):
-        return v
-    if v.lower() in ('yes', 'true', 't', 'y', '1'):
-        return True
-    elif v.lower() in ('no', 'False', 'f', 'n', '0'):
-        return False
-    else:
-        raise argparse.ArgumentTypeError('Boolean value expected.')
-
+print('Current cuda device:', torch.cuda.current_device())
+print('Count of using GPUs:', torch.cuda.device_count())
 
 parser = argparse.ArgumentParser(description="Matrix Factorization with movieLens")
 parser.add_argument('-e', '--epochs', default=1, type=int)
@@ -37,10 +26,21 @@ parser.add_argument('-f', '--factor', default=30, type=int)  # number of factor 
 parser.add_argument('-b', '--batch', default=32, type=int)
 parser.add_argument('--lr', '--learning_rate', default=1e-3, type=float)
 parser.add_argument('-s', '--size', default='small', type=str)
-
-
+parser.add_argument('-bi','--bias',default='False',type=str)
+parser.add_argument('-cs','--confidence',default='False',type=str)
 
 args = parser.parse_args()
+if args.bias == 'True':
+    use_bias=True
+else:
+    use_bias=False
+
+if args.confidence=='True':
+    use_cs=True
+else:
+    use_cs=False
+
+
 
 root_path = "dataset"
 train_set = MovieLens(root=root_path,file_size=args.size,train=True,download=True)
@@ -74,12 +74,12 @@ model=MatrixFactorization(num_users=train_num_users*args.batch,
                           avg=overall_avg,
                           device=device,
                           confidence_score_dict=confidence_score,
-                          bias_select=True,
-                          confidence_select=True
+                          bias_select=use_bias,
+                          confidence_select=use_cs,
                           )
-if torch.cuda.device_count() >1:
-    print("Multi gpu", torch.cuda.device_count())
-    model = torch.nn.DataParallel(model)
+#if torch.cuda.device_count() >1:
+#    print("Multi gpu", torch.cuda.device_count())
+#    model = torch.nn.DataParallel(model)
 model.to(device)
 optimizer = optim.Adam(model.parameters(),lr=args.lr)
 criterion = RMSELoss()
@@ -102,7 +102,6 @@ if __name__=="__main__":
     plt.xlabel('epoch')
     plt.ylabel('RMSE')
     now = time.localtime()
-    time_now = f"{now.tm_hour:02d}:{now.tm_min:02d}:{now.tm_sec:02d} "
     fig_file = f"loss_curve_epochs_{args.epochs}_batch_{args.batch}_size_{args.size}_lr_{args.lr}_factor_{args.factor}.png"
     if os.path.isfile(fig_file):
         os.remove(fig_file)

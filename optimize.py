@@ -16,20 +16,12 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = ''
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print('device:', device)
-print('Current cuda device:', torch.cuda.current_device())
-print('Count of using GPUs:', torch.cuda.device_count())
 
-# function for using bool type in str2bool
-def str2bool(v):
-    if isinstance(v, bool):
-        return v
-    if v.lower() in ('yes', 'true', 't', 'y', '1'):
-        return True
-    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
-        return False
-    else:
-        raise argparse.ArgumentTypeError('Boolean value expected.')
+if device == 'cuda':
+    print('Current cuda device:', torch.cuda.current_device())
+    print('Count of using GPUs:', torch.cuda.device_count())
 
+    
 
 parser = argparse.ArgumentParser(description="Matrix Factorization with movieLens")
 parser.add_argument('-e', '--epochs', default=1, type=int)
@@ -37,15 +29,22 @@ parser.add_argument('-f', '--factor', default=30, type=int)  # number of factor 
 parser.add_argument('-b', '--batch', default=32, type=int)
 parser.add_argument('--lr', '--learning_rate', default=1e-3, type=float)
 parser.add_argument('-s', '--size', default='small', type=str)
-parser.add_argument('-d','--download', type=str2bool, nargs='?',
-                        const=True, default=False)
-parser.add_argument('-bi', '--bias', default=True, const=True,type=str2bool)
-parser.add_argument('-c', '--confidence', default=True, const=True,type=str2bool)
-
+parser.add_argument('-d','--download', type=str, default='False')
+parser.add_argument('-bi','--bias',type=str,default='False')
+parser.add_argument('-cs','--confidence',type=str,default='False')
 args = parser.parse_args()
 
+if args.download == 'False':
+    download = False
+else:
+    download = True
+
+download = False if args.download=='False' else True
+bias = False if args.bias=='False'  else True
+confidence = False if args.confidence=='False' else True
+
 root_path = "dataset"
-train_set = MovieLens(root=root_path, file_size=args.size, train=True, download=args.download)
+train_set = MovieLens(root=root_path, file_size=args.size, train=True, download=download)
 test_set = MovieLens(root=root_path, file_size=args.size, train=False, download=False)
 
 train_num_users, train_num_items = train_set.get_numberof_users_items()
@@ -83,8 +82,8 @@ if __name__ == "__main__":
                                     avg=overall_avg,
                                     device=device,
                                     confidence_score_dict=confidence_score,
-                                    bias_select=args.bias,
-                                    confidence_select=args.confidence
+                                    bias_select=False,
+                                    confidence_select=False
                                     ).to(device)
         optimizer = optim.Adam(model.parameters(),lr=args.lr)
         criterion = RMSELoss()
