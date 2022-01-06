@@ -26,14 +26,20 @@ class Train():
         device = self.device
         for epochs in range(0,total_epochs):
             avg_cost = 0
-            for user,item,target in dataloader:
+
+            for user,item, bias_user, bias_item, o_avg, c_score, target in dataloader:
                 user,item,target=user.to(device),item.to(device),target.to(device)
+                bias_user,bias_item,o_avg,c_score= bias_user.to(device),bias_item.to(device),o_avg.to(device),c_score.to(device)
+                # set gradient zero
                 optimizer.zero_grad()
-                pred = torch.flatten(model(user, item),start_dim=1).to(device)
+
+                # pass argument to model
+                pred = torch.flatten(model(user, item,bias_user,bias_item,o_avg,c_score),start_dim=1).to(device)
                 cost = criterion(pred,target)
                 cost.backward()
                 optimizer.step()
                 avg_cost += cost.item() / total_batch
+
             if self.print_cost:
                 print('Epoch:', '%04d' % (epochs + 1), 'cost =', '{:.9f}'.format(avg_cost))
             loss.append(avg_cost)

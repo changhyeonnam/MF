@@ -18,7 +18,7 @@ class Test():
     def __init__(self,model:torch.nn.Module,
                  dataloader:torch.utils.data.dataloader,
                  criterion:torch.nn,
-                 device,
+                 device:torch.device,
                  print_cost=True):
         self.model = model
         self.dataloader = dataloader
@@ -34,9 +34,9 @@ class Test():
         avg_cost = 0
         device = self.device
         with torch.no_grad():
-            for idx,(user,item,target) in enumerate(dataloader):
+            for user,item, bias_user, bias_item, o_avg, c_score, target in dataloader:
                 user,item,target = user.to(device),item.to(device),target.to(device)
-                pred = torch.flatten(model(user,item),start_dim=1)
+                pred = torch.flatten(model(user, item,bias_user,bias_item,o_avg,c_score),start_dim=1).to(device)
                 cost = criterion(pred,target)
                 if self.print_cost:
                     print(f" cost for test dataset at batch#{idx} : {cost}")

@@ -8,52 +8,30 @@ class MatrixFactorization(nn.Module):
                  num_users:int,
                  num_items:int,
                  num_factors:int,
-                 bias_uId:dict,
-                 bias_mId:dict,
-                 avg:int,
-                 device,
-                 confidence_score_dict,
-                 bias_select=False,
-                 confidence_select=False,) -> None:
+                 device : torch.device,
+                 use_bias=False,
+                 use_confidence=False,) -> None:
 
         super(MatrixFactorization, self).__init__()
         self.num_users = num_users
         self.num_items = num_items
         self.num_factors = num_factors
-        self.bias_uId = bias_uId
-        self.bias_mId = bias_mId
-        self.avg = avg
         self.device = device
-        self.cs_dict = confidence_score_dict
-        self.bias_select = bias_select
-        self.confidence_select = confidence_select
+        self.use_bias = use_bias
+        self.use_confidence = use_confidence
+
         self.user_embedding = nn.Embedding(self.num_users,self.num_factors) # num_embeddings = batchsize * numuser embedding_dim = num_factors
         self.item_embedding = nn.Embedding(self.num_items,self.num_factors) # sparse = False
         torch.nn.init.ones_(self.user_embedding.weight)
         torch.nn.init.ones_(self.item_embedding.weight)
 
-    def forward(self,users,items):
+    def forward(self,users,items,bias_user,bias_item,o_avg,c_score):
         result = torch.bmm(self.user_embedding(users),torch.transpose(self.item_embedding(items),1,2))
-        # (32,1,10) (32,10,1) = 32, 1 ,1
-        if self.bias_select:
-            bias_uId=np.array([])
-            bias_mId=np.array([])
-            for item in users:
-                bias_uId=np.append(bias_uId,self.bias_uId[item.item()])
-            bias_uId=bias_uId.reshape((-1,1,1))
-            for item in items:
-                bias_mId=np.append(bias_mId,self.bias_mId[item.item()])
-            bias_mId=bias_mId.reshape((-1,1,1))
-            bias = bias_uId+bias_mId+self.avg #broad casting
-            bias = torch.FloatTensor(bias).to(self.device)
+        if self.use_bias:
+            bias = bias_user+ bias_item+ o_avg
             result = result+bias
-        if self.confidence_select:
-            confidence_score = np.array([])
-            for item in users:
-                confidence_score = np.append(confidence_score,self.cs_dict[item.item()])
-            confidence_score=confidence_score.reshape((-1,1,1))
-            confidence_score = torch.FloatTensor(confidence_score).to(self.device)
-            result = torch.bmm(result,confidence_score)
+        if self.use_confidence:
+            result = torch.bmm(result,c_score)
         return result
 
     def __call__(self,*args):
