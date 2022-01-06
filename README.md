@@ -13,7 +13,7 @@ This repository is implementation about [Matrix Factorization Techniques for Rec
 <p align="center">
 <div class="center">
   <figure>
-    <a href="/images/optimize_graph.png"><img src="images/optimize_graph.png" width="600" ></a>
+    <a href="/images/matrix.png"><img src="images/matrix.png" width="600" ></a>
   </figure>
 </div>
 </p>
