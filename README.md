@@ -24,10 +24,6 @@ This repository is implementation about [Matrix Factorization Techniques for Rec
 
    해당 수식은 bias, confidence score 항들을 추가한 cost function입니다. cost function으로 RSME(Root Squared Mean Error)를 사용하였다.
 
-   ```math
-   $\min\limits_{q,p} \sum\limits_{(u,i)\in k}c_{ui}(r_{ui}-\mu-b_i-b_u-q^T_ip_u)^2+\lambda(\mid\mid q_i \mid\mid ^2+ \mid\mid p_u\mid\mid^2+b_u^2+b_i^2)$
-   ```
-
 ### Matrix Factorization model directory tree
 
 ```python
