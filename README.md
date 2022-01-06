@@ -12,7 +12,7 @@ This repository is implementation about [Matrix Factorization Techniques for Rec
 
 <div class="center">
   <figure>
-    <a href="/images/matrix.png"><img src="images/matrix.png" width="600" ></a>
+    <a href="/images/matrix.png"><img src="images/matrix.png" width="600" height="600" style="display: block; margin: 0 auto ></a>
   </figure>
 </div>
 
@@ -60,7 +60,7 @@ factor개수가 19에서 가장 좋은 성능을 보였다.
 
 <div class="center">
   <figure>
-    <a href="/images/optimize_graph.png"><img src="images/optimize_graph.png" width="600" ></a>
+    <a href="/images/optimize_graph.png"><img src="images/optimize_graph.png" width="600" height="600" style="display: block; margin: 0 auto ></a>
   </figure>
 </div>
 
@@ -68,7 +68,7 @@ epoch =30, batch=32, learning rater = 0.001, best factor =19일 때의 epoch별 
 
 <div class="center">
   <figure>
-    <a href="/images/loss_curve.png"><img src="images/loss_curve.png" width="600" ></a>
+    <a href="/images/loss_curve.png"><img src="images/loss_curve.png" width="600" height="600" style="display: block; margin: 0 auto ></a>
   </figure>
 </div>
 
