@@ -38,6 +38,12 @@ This repository is implementation about [Matrix Factorization Techniques for Rec
 └── utils.py
 ```
 
+### development enviroment
+
+- OS: Max OS X
+- IDE: pycharm, gpu sever computer에서는 vim을 사용
+- GPU: NVIDIA RTX A6000 8대
+
 ### Quick start
 
 ```python
