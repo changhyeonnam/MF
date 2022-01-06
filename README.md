@@ -18,14 +18,15 @@ This repository is implementation about [Matrix Factorization Techniques for Rec
 </div>
 </p>
 
-- 해당 task는 feature들을 dot prodcut($q^T_ip_u$)한 것 이외에도, 논문에서 설명한 bias와 confidence score라는 항을 prediction에 추가하였다.
+- 해당 task는 feature들을 dot product한 것 이외에도, 논문에서 설명한 bias와 confidence score라는 항을 prediction에 추가하였다.
    - bias항은 특정 user 혹은 특정 item에 대한 rating의 편향성이 모델에 포함되지 않게 하기 위해 추가하였다.
    - 논문에서 설명한 confidence score는 해당 user가 얼마나 신뢰성 있는지 나타내는 지표로, user마다 rating한 빈도수로도 판단할 수 있다.
 
    해당 수식은 bias, confidence score 항들을 추가한 cost function입니다. cost function으로 RSME(Root Squared Mean Error)를 사용하였다.
 
-   $\min\limits_{q,p} \sum\limits_{(u,i)\in k}c_{ui}(r_{ui}-\mu-b_i-b_u-q^T_ip_u)^2+\lambda(\mid\mid q_i \mid\mid ^2+ \mid\mid p_u\mid\mid^2+b_u^2+b_i^2)$
-
+   ```math
+   \min\limits_{q,p} \sum\limits_{(u,i)\in k}c_{ui}(r_{ui}-\mu-b_i-b_u-q^T_ip_u)^2+\lambda(\mid\mid q_i \mid\mid ^2+ \mid\mid p_u\mid\mid^2+b_u^2+b_i^2)
+   ```
 
 ### Matrix Factorization model directory tree
 
