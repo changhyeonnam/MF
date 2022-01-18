@@ -20,13 +20,14 @@ class MatrixFactorization(nn.Module):
         self.use_bias = use_bias
         self.use_confidence = use_confidence
 
-        self.user_embedding = nn.Embedding(self.num_users,self.num_factors) # num_embeddings = batchsize * numuser embedding_dim = num_factors
-        self.item_embedding = nn.Embedding(self.num_items,self.num_factors) # sparse = False
+        self.user_embedding = nn.Embedding(self.num_users,self.num_factors) # num_users = classe of users +1
+        self.item_embedding = nn.Embedding(self.num_items,self.num_factors) # num_items = classe of items +1
         torch.nn.init.ones_(self.user_embedding.weight)
         torch.nn.init.ones_(self.item_embedding.weight)
 
     def forward(self,users,items,bias_user,bias_item,o_avg,c_score):
         result = torch.bmm(self.user_embedding(users),torch.transpose(self.item_embedding(items),1,2))
+
         if self.use_bias:
             bias = bias_user+ bias_item+ o_avg
             result = result+bias

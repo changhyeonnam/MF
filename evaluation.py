@@ -34,7 +34,7 @@ class Test():
         avg_cost = 0
         device = self.device
         with torch.no_grad():
-            for user,item, bias_user, bias_item, o_avg, c_score, target in dataloader:
+            for idx,(user,item, bias_user, bias_item, o_avg, c_score, target) in enumerate(dataloader):
                 user,item,target = user.to(device),item.to(device),target.to(device)
                 pred = torch.flatten(model(user, item,bias_user,bias_item,o_avg,c_score),start_dim=1).to(device)
                 cost = criterion(pred,target)

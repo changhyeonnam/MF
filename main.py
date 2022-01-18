@@ -26,7 +26,7 @@ if device == 'cuda':
 # parser setting
 parser = argparse.ArgumentParser(description="Matrix Factorization with movieLens")
 parser.add_argument('-e','--epoch',type=int,default=1,help="Number of epochs")
-parser.add_argument('-b','--batch',type=int,default=256,help="Batch size")
+parser.add_argument('-b','--batch',type=int,default=32,help="Batch size")
 parser.add_argument('-f','--factor',type=int,default=8,help='choose number of predictive factor')
 parser.add_argument('-lr', '--lr', default=1e-3, type=float,help='learning rate for optimizer')
 parser.add_argument('-fi', '--file_size', default='small', type=str)
@@ -51,7 +51,7 @@ train_set = MovieLens(df=train_dataframe,total_df=total_dataframe)
 test_set = MovieLens(df=test_dataframe,total_df=total_dataframe)
 
 # get number of unique userID, unique  movieID
-train_num_users, train_num_items = total_dataframe['userId'].nunique(), total_dataframe['movieId'].nunique()
+train_num_users, train_num_items = total_dataframe['userId'].max()+1, total_dataframe['movieId'].max()+1
 
 # dataloader for train, test
 dataloader_train = DataLoader(
@@ -66,8 +66,8 @@ dataloader_test = DataLoader(
 )
 
 # model for MF
-model=MatrixFactorization(num_users=train_num_users*args.batch,
-                          num_items=train_num_items*args.batch,
+model=MatrixFactorization(num_users=train_num_users,
+                          num_items=train_num_items,
                           num_factors=args.factor,
                           device=device,
                           use_bias=use_bias,
