@@ -3,7 +3,7 @@ This repository is implementation about [Matrix Factorization Techniques for Rec
 
 ### Dataset
 
-- Recommendation System 분야의 journal, conference 논문들과 State-of-the-Art 논문들에서 bench mark dataset으로 MovieLens Dataset을 이용한다. MovieLens dataset은 userId, movieId, rating, timestamp, tag, title, genres 등을 포함한 column들로 이뤄져 있다. column들 중 userId, movieId, rating, timestamp으로 이루어져 있는 ratings.csv 파일을 활용한다.  100k크기의 dataset기준으로, user는 610명, movie는 9742개, rating은 100836개로 dataset이 구성되어 있다. MovieLens 데이터는 기본적으로 user-based dataset으로, 각 user마다 최소 20개의 movie에 대해 평가를 한 user들만 포함되어 있다.  file size는 100k, 1M부터 최대 20M까지 있다.
+The MovieLens Dataset is used as a bench mark dataset in journals, conference papers, and State-of-the-Art papers in the Recommendation System field. The MovieLens dataset consists of columns including userId, movieId, rating, timestamp, tag, title, genres, etc. Among the columns, the ratings.csv file consisting of userId, movieId, rating, and timestamp is used. Based on a 100k dataset, the dataset consists of 610 users, 9742 movies, and 100836 ratings. MovieLens data is basically a user-based dataset, including only users who have evaluated at least 20 movies for each user. The file size ranges from 100k, 1M to a maximum of 20M.
 
 ### Model explanation
 
@@ -15,14 +15,14 @@ This repository is implementation about [Matrix Factorization Techniques for Rec
 </div>
 </p>
 
-- Matrix Factorization Techniques for Recommender Systems 논문을 기반으로 Matrix Factorization 모델을 구현하였다.
-- Matrix Factorization model은 user-item interaction에 대해 latent factor들을 inner product(dot product)하여 target에 대한 Matrix를 완성시킨다. Implicit feedback, explicit feedback을 모두 고려하여 MF를 구현할 수 있고, 해당 task에서는 explicit feedback 만을 고려하여 모델을 학습시켰다.
+- A Matrix Factorization model was implemented based on the Matrix Factorization Techniques for Recommender Systems paper.
+- The Matrix Factorization model completes the matrix for the target by inner product (dot product) of latent factors for user-item interaction. MF can be implemented considering both implicit feedback and explicit feedback, and the model was trained in consideration of only explicit feedback in the task.
 
-- 해당 task는 feature들을 dot product한 것 이외에도, 논문에서 설명한 bias와 confidence score라는 항을 prediction에 추가하였다.
-   - bias항은 특정 user 혹은 특정 item에 대한 rating의 편향성이 모델에 포함되지 않게 하기 위해 추가하였다.
-   - 논문에서 설명한 confidence score는 해당 user가 얼마나 신뢰성 있는지 나타내는 지표로, user마다 rating한 빈도수로도 판단할 수 있다.
+- In this task, in addition to dot product of features, terms such as bias and confidence score described in the paper were added to the prediction.
+   - The bias term was added to prevent the bias of ratings for specific users or specific items from being included in the model.
+   - The confidence score described in the paper is an indicator of how reliable the user is, and it can also be judged by the frequency of ratings for each user.
 
-   해당 수식은 bias, confidence score 항들을 추가한 cost function입니다. cost function으로 RSME(Root Squared Mean Error)를 사용하였다.
+   This formula is a cost function with the addition of bias and confidence score terms. RSME (Root Squared Mean Error) was used as the cost function.
 
 ### Matrix Factorization model directory tree
 
@@ -41,8 +41,8 @@ This repository is implementation about [Matrix Factorization Techniques for Rec
 ### development enviroment
 
 - OS: Max OS X
-- IDE: pycharm, gpu sever computer에서는 vim을 사용
-- GPU: NVIDIA RTX A6000 8대
+- IDE: pycharm, gpu sever computer vim
+- GPU: NVIDIA RTX A6000
 
 ### Quick start
 
@@ -61,7 +61,7 @@ python main.py -e 30 -b 32 -f 30 -lr 0.001 -down True
 
 
 
-factor개수가 19에서 가장 좋은 성능을 보였다.
+The number of factors showed the best performance at 19.
 
 <p align="center">
 <div class="center">
