@@ -27,7 +27,11 @@ class MatrixFactorization(nn.Module):
 
     def forward(self,users,items,bias_user,bias_item,o_avg,c_score):
         result = torch.bmm(self.user_embedding(users),torch.transpose(self.item_embedding(items),1,2))
-
+        user_embedding = torch.squeeze(self.user_embedding(users))
+        item_embedding = torch.squeeze(self.item_embeddding(items))
+        result = torch.mm(user_embedding, torch.transpose(item_embedding,1,0))
+        result = torch.diagonal(result,0)
+ 
         if self.use_bias:
             bias = bias_user+ bias_item+ o_avg
             result = result+bias
