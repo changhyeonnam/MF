@@ -72,7 +72,7 @@ The number of factors showed the best performance at 19.
 </p>
 
 
-epoch =30, batch=32, learning rater = 0.001, best factor =19일 때의 epoch별 RMSELoss.
+epoch =30, batch=32, learning rater = 0.001, best factor =19. (RMSELoss per epoch)
 
 <p align="center">
 <div class="center">
